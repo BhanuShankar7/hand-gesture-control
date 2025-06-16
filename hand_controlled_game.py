@@ -105,7 +105,7 @@ with mp_hand.Hands(min_detection_confidence=0.5,
                     PressKey(accelerato_key_pressed)
                     current_key_pressed.add(accelerato_key_pressed)
                 # Release brake key if pressed
-                
+
                 if break_key_pressed in current_key_pressed:
                     ReleaseKey(break_key_pressed)
                     current_key_pressed.discard(break_key_pressed)
@@ -115,18 +115,21 @@ with mp_hand.Hands(min_detection_confidence=0.5,
                 key_count += 1
             else:
                 # Partial finger states - no action, release any pressed keys
+
                 if len(current_key_pressed) > 0:
                     for key in list(current_key_pressed):
                         ReleaseKey(key)
                     current_key_pressed.clear()
         else:
             # No hands detected - release any pressed keys
+
             if len(current_key_pressed) > 0:
                 for key in list(current_key_pressed):
                     ReleaseKey(key)
                 current_key_pressed.clear()
 
         # Show hand detection status on screen
+
         cv2.putText(image, detected_text, (20, 50), cv2.FONT_HERSHEY_SIMPLEX,
                     1, (255, 255, 255), 2)
 
@@ -134,11 +137,13 @@ with mp_hand.Hands(min_detection_confidence=0.5,
         k = cv2.waitKey(1)
         if k == 27:  # ESC key to exit
             # Release all keys before exit
+
             for key in list(current_key_pressed):
                 ReleaseKey(key)
             break
 
 video.release()
 cv2.destroyAllWindows()
+
 
 
