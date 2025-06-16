@@ -4,6 +4,7 @@ import time
 import pyautogui
 
 # Key mappings for left and right arrow keys
+
 LEFT_ARROW = 'left'
 RIGHT_ARROW = 'right'
 
@@ -29,6 +30,7 @@ video = cv2.VideoCapture(0)
 
 with mp_hand.Hands(min_detection_confidence=0.5,
                    min_tracking_confidence=0.5) as hands:
+    
     while True:
         keyPressed = False
         break_pressed = False
@@ -61,11 +63,13 @@ with mp_hand.Hands(min_detection_confidence=0.5,
         fingers = []
         if len(lmList) != 0:
             # Thumb (special case for left/right hand)
+
             if lmList[tipIds[0]][1] > lmList[tipIds[0] - 1][1]:
                 fingers.append(1)
             else:
                 fingers.append(0)
             # Other fingers
+
             for id in range(1, 5):
                 if lmList[tipIds[id]][2] < lmList[tipIds[id] - 2][2]:
                     fingers.append(1)
@@ -76,12 +80,14 @@ with mp_hand.Hands(min_detection_confidence=0.5,
             
             if total == 0:
                 # Brake gesture detected (all fingers down)
+
                 cv2.putText(image, "BRAKE", (45, 375), cv2.FONT_HERSHEY_SIMPLEX,
                             2, (0, 0, 255), 5)
                 if break_key_pressed not in current_key_pressed:
                     PressKey(break_key_pressed)
                     current_key_pressed.add(break_key_pressed)
                 # Release accelerator key if pressed
+
                 if accelerato_key_pressed in current_key_pressed:
                     ReleaseKey(accelerato_key_pressed)
                     current_key_pressed.discard(accelerato_key_pressed)
@@ -92,12 +98,14 @@ with mp_hand.Hands(min_detection_confidence=0.5,
                 
             elif total == 5:
                 # Gas gesture detected (all fingers up)
+
                 cv2.putText(image, "GAS", (45, 375), cv2.FONT_HERSHEY_SIMPLEX,
                             2, (0, 255, 0), 5)
                 if accelerato_key_pressed not in current_key_pressed:
                     PressKey(accelerato_key_pressed)
                     current_key_pressed.add(accelerato_key_pressed)
                 # Release brake key if pressed
+                
                 if break_key_pressed in current_key_pressed:
                     ReleaseKey(break_key_pressed)
                     current_key_pressed.discard(break_key_pressed)
