@@ -133,3 +133,4 @@ with mp_hand.Hands(min_detection_confidence=0.5,
 video.release()
 cv2.destroyAllWindows()
 
+
